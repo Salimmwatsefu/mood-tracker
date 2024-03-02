@@ -11,13 +11,13 @@ function HomeNav() {
                 <img
                 src={"/logom.png"}
                 alt='Logo'
-                className='w-[60px] '
+                className='w-[50px] '
                 />
-                <p className='mt-[16px] md:mt-2 md:ml-1 ml-3 md:text-xl text-2xl  font-bold  '>Moodly</p>
+                <p className='mt-[16px] md:mt-2 md:ml-1 ml-3 md:text-xl text-xl  font-bold  '>Moodly</p>
             </div>
             </Link>
 
-            <button className='mt-2 absolute md:right-[250px] right-5 flex bg-[#FF4967] rounded-full p-[2px] md:w-[120px] h-[50px] px-8 py-3' >
+            <button className='mt-2 absolute md:right-[250px] right-5 flex bg-[#FF4967] rounded-full p-[2px] md:w-[120px]  md:h-[50px] px-8 py-3' >
 
                 <p className=' text-white text-center mx-auto font-medium'>Log in</p>
 

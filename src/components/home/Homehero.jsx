@@ -4,11 +4,11 @@ function Homehero() {
   return (
     <div className=' '>
         <div className=' md:grid-cols-2 grid md:h-[100vh]'>
-        <div className=' md:pt-20 lg:ml-28 '>
+        <div className=' md:pt-20  lg:ml-28 '>
             <h1 className=' lg:text-7xl text-6xl leading-snug font-semibold hidden md:block mt-20 '>Moodly<span className='text-[#549CE1]'>.</span></h1>
 
-            <p className='md:text-xl text-4xl md:mt-10 mt-5 md:text-gray-700 text-black font-bold mx-2 text-center md:text-left'>Track your mood with Moodly</p>
-            <p className='md:mt-14 mt-10 md:text-xl text-2xl text-gray-400 text-center md:text-left  '>Moodly is a free and easy to use daily mood tracker </p>
+            <p className='md:text-xl text-3xl md:mt-10 -mt-8 md:text-gray-700 text-black font-bold mx-2 text-center md:text-left'>Track your mood with Moodly</p>
+            <p className='md:mt-14 mt-3 md:text-xl text-2xl text-gray-400 text-center md:text-left  '>Moodly is a free and easy to use daily mood tracker </p>
 
             <div className='flex justify-center items-center  mt-10 gap-5'>
 
