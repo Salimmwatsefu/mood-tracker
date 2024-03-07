@@ -1,7 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Authmodalcontent from './Authmodalcontent'
+import { useState } from 'react';
 
 function HomeNav() {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
+
+
   return (
     <div className=''>
          <div className='absolute  w-full z-10 '>
@@ -17,7 +33,9 @@ function HomeNav() {
             </div>
             </Link>
 
-            <button className='mt-2 absolute md:right-[250px] right-5 flex bg-[#FF4967] rounded-full p-[2px] md:w-[120px]  md:h-[50px] px-8 py-3' >
+            <button className='mt-2 absolute md:right-[250px] right-5 flex bg-[#FF4967] rounded-full p-[2px] md:w-[120px]  md:h-[50px] px-8 py-3'
+            onClick={openModal}
+            >
 
                 <p className=' text-white text-center mx-auto font-medium'>Log in</p>
 
@@ -32,6 +50,9 @@ function HomeNav() {
 
       
     </div>
+
+    {/* Render Authmodalcontent with onClose handler */}
+    {isModalOpen && <Authmodalcontent onClose={closeModal} />}
 
     
     </div>

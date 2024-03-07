@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Homehero() {
   return (
@@ -7,24 +8,29 @@ function Homehero() {
         <div className=' md:pt-20  lg:ml-28 '>
             <h1 className=' lg:text-7xl text-6xl leading-snug font-semibold hidden md:block mt-20 '>Moodly<span className='text-[#549CE1]'>.</span></h1>
 
-            <p className='md:text-xl text-3xl w-[80%] md:mt-10 -mt-8 md:text-gray-700 text-black font-bold mx-2 text-center md:text-left'>Track your mood with Moodly</p>
-            <p className='md:mt-14 mt-3 md:text-xl text-2xl text-gray-400 text-center md:text-left  '>Moodly is a free and easy to use daily mood tracker </p>
+            <p className='md:text-xl text-3xl  md:mt-10 -mt-8 md:text-gray-700 text-black font-bold mx-4 text-center md:text-left'>Track your mood with Moodly</p>
+            <p className='md:mt-14 mt-3 md:text-xl text-xl text-gray-400 text-center md:text-left mx-4'>Moodly is a free and easy to use daily mood tracker </p>
 
-            <div className='flex justify-center items-center  mt-10 gap-5'>
+            <div className='flex justify-center items-center  mt-10 gap-5 md:-ml-40'>
 
-            <button className='  bg-[#FF4967] rounded-full p-[2px] md:w-[180px] w-[150px] h-[70px] px-8 py-3' >
+
+<Link to={'/instructor-login'}>
+            <button className='  bg-[#FF4967] rounded-full  md:w-[180px] w-[130px] h-[60px] px-8 py-3' >
 
 <p className=' text-white text-center mx-auto font-medium'>Instructor</p>
 
 
 </button>
+</Link>
 
-<button className='    bg-white text-[#FF4967] border-2 border-[#FF4967] rounded-full p-[2px] md:w-[180px] w-[150px] h-[70px] px-8 py-3' >
+<Link to={'/student-login'} >
+<button className='bg-white text-[#FF4967] border-2 border-[#FF4967] rounded-full p-[2px] md:w-[180px] w-[130px] h-[60px] px-8 py-3' >
 
 <p className=' text-center mx-auto font-medium'>Student</p>
 
 
 </button>
+</Link>
 
 </div>
         </div>
