@@ -5,6 +5,9 @@ import StudentLogin from './components/Authentication/StudentLogin';
 import StudentSignup from './components/Authentication/StudentSignup';
 import Home from './components/home/Home';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import InsHome from './components/instructor/InsHome';
+import InstructorClass from './components/instructor/InstructorClass';
+
 
 
 function App() {
@@ -20,6 +23,8 @@ function App() {
       <Route path='/student-signup' element={<StudentSignup />} />
       <Route path='/instructor-login' element={<InstructorLogin />} />
       <Route path='/instructor-signup' element={<InstructorSignup />} />
+      <Route path='instructor-home/:sessionId' element={<InsHome />} />
+      <Route path='/instructor-class' element={<InstructorClass />} />
     </Routes>
       
     </>
