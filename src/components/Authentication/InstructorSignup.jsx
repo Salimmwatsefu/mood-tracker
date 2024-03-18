@@ -1,32 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from 'react-query';
 
 
 const InstructorSignup = () => {
 
-    const goBack = () => {
-      // Add logic to go back to the previous page
-      window.history.back();
-    };
- 
+  const navigate = useNavigate();
+
+
+  const [formData, setFormData] = useState({
+    uname: "",
+    fname: "",
+    email: "",
+    age: "",
+    password: "",
+  });
+
+  const registerMutation = useMutation((formData) => 
+    fetch('http://127.0.0.1:5000/api/v1/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: formData.uname,
+        password: formData.password,
+        email: formData.email,
+        name: formData.fname,
+        age: formData.age,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+      return response.json();
+    })
+  );
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await registerMutation.mutateAsync(formData);
+      // Handle successful registration
+      console.log('Registration successful!');
+      navigate('/instructor-login');
+    } catch (error) {
+      // Handle registration error
+      console.error('Registration error:', error.message);
+    }
+  };
+
+  const goBack = () => {
+    // Add logic to go back to the previous page
+    window.history.back();
+  };
+
+  
+
+
   return (
-    <section className="bg-gray-200  lg:py-[60px]">
+    <section className="bg-gray-200 lg:py-[60px]">
       <div className="container mx-auto">
         <div className="-mx-1 flex flex-wrap ">
           <div className="w-full px-4">
-            
             <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white px-10 py-16 text-center dark:bg-dark-2 sm:px-12 md:px-[60px]">
-
-            <button className=" absolute top-5 left-4" onClick={goBack}>
-            <IoIosArrowBack className=" text-3xl font-bo" />
-            </button>
-            
+              <button className=" absolute top-5 left-4" onClick={goBack}>
+                <IoIosArrowBack className=" text-3xl font-bo" />
+              </button>
               <div className="mb-10 text-center md:mb-5">
-                <a
-                  href="/#"
-                  className="mx-auto inline-block max-w-[160px]"
-                >
+                <a href="/#" className="mx-auto inline-block max-w-[160px]">
                   <img
                     src="/logom.png"
                     alt="logo"
@@ -35,23 +84,51 @@ const InstructorSignup = () => {
                   <h1 className=" font-semibold text-xl">Moodly</h1>
                 </a>
               </div>
-              <form autoComplete="off">
-                <h2 className=" text-left text-sm font-medium mb-5 text-[#549CE1] ">Instructor Sign up:</h2>
-                <InputBox type="text" name="fname" placeholder="First Name" />
-                <InputBox type="text" name="lname" placeholder="Last Name" />
-                <InputBox type="email" name="email" placeholder="Email" />
-                <InputBox type="number" name="age" placeholder="Age" min="0" />
+              <form autoComplete="off" onSubmit={handleSubmit}>
+                <h2 className="text-left text-sm font-medium mb-5 text-[#549CE1] ">Instructor Sign up:</h2>
+                <InputBox
+                  type="text"
+                  name="uname"
+                  placeholder="UserName"
+                  value={formData.uname}
+                  onChange={handleChange}
+                />
+                <InputBox
+                  type="text"
+                  name="fname"
+                  placeholder="Full Name"
+                  value={formData.fname}
+                  onChange={handleChange}
+                />
+                <InputBox
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <InputBox
+                  type="number"
+                  name="age"
+                  placeholder="Age"
+                  min="0"
+                  value={formData.age}
+                  onChange={handleChange}
+                />
                 <InputBox
                   type="password"
                   name="password"
                   placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
                 <div className="mb-10">
                   <button
                     type="submit"
-                    value="Sign In"
-                    className="w-full cursor-pointer rounded-md border  px-5 py-3 text-base font-medium  transition hover:bg-opacity-90 bg-[#FF4967] text-white"
-                  >Submit</button>
+                    className="w-full cursor-pointer rounded-md border px-5 py-3 text-base font-medium transition hover:bg-opacity-90 bg-[#FF4967] text-white"
+                  >
+                    Submit
+                  </button>
                 </div>
               </form>
               <p className="mb-6 text-base text-secondary-color dark:text-dark-7">
@@ -128,7 +205,6 @@ const InstructorSignup = () => {
                 </Link>
               </p>
 
-              
             </div>
           </div>
         </div>
@@ -137,17 +213,19 @@ const InstructorSignup = () => {
   );
 };
 
-export default InstructorSignup;
-
-const InputBox = ({ type, placeholder, name }) => {
+const InputBox = ({ type, placeholder, name, value, onChange }) => {
   return (
     <div className="mb-6">
       <input
         type={type}
         placeholder={placeholder}
         name={name}
-        className="w-full rounded-md border border-stroke bg-white px-5 py-3 text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none "
+        value={value}
+        onChange={onChange}
+        className="w-full rounded-md border border-stroke bg-white px-5 py-3 text-base text-body-color outline-none focus:border-primary focus-visible:shadow-none"
       />
     </div>
   );
 };
+
+export default InstructorSignup;
