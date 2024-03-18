@@ -8,6 +8,9 @@ import Intensity from './components/Student/Mood/Intensity';
 import Student from './components/Student/studentPage';
 import Home from './components/home/Home';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import InsHome from './components/instructor/InsHome';
+import InstructorClass from './components/instructor/InstructorClass';
+
 
 
 function App() {
@@ -21,9 +24,14 @@ function App() {
       <Route path='/student-signup' element={<StudentSignup />} />
       <Route path='/instructor-login' element={<InstructorLogin />} />
       <Route path='/instructor-signup' element={<InstructorSignup />} />
+
       <Route path='/choose-mood' element={<ChooseMood />} />
       <Route path='/choose-mood/intensity' element={<Intensity />} />
       <Route path='/student' element={<Student />} />
+
+
+      <Route path='instructor-home/:sessionId' element={<InsHome />} />
+      <Route path='/instructor-class' element={<InstructorClass />} />
 
     </Routes>
     </>

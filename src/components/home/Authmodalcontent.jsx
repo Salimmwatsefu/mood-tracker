@@ -1,11 +1,11 @@
 import React from 'react'
-import Authmodal from './Authmodal'
+import Modal from './Modal'
 import { Link } from 'react-router-dom'
 
 function Authmodalcontent({ onClose }) {
   return (
     <div>
-        <Authmodal onClose={onClose}>
+        <Modal onClose={onClose}>
 
 
             <div className=' '>
@@ -46,7 +46,7 @@ function Authmodalcontent({ onClose }) {
                 </div>
                 
             </div>
-        </Authmodal>
+        </Modal>
     </div>
   )
 }
