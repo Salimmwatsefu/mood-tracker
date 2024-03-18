@@ -1,101 +1,96 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link component
+import React, { useState, useEffect } from 'react';
+import StudentNav from '../StudentNav';
 
 const ChooseMood = () => {
-  // Common mood options with emojis
   const moods = [
-    { label: "😊 Happy" },
-    { label: "😢 Sad" },
-    { label: "😃 Excited" },
-    { label: "😌 Calm" },
-    { label: "😡 Angry"},
-    { label: "😔 Tired"},
-    { label: "😩 Stressed"},
-    { label: "😕 Confused" },
-    { label: "😍 Love" },
-    { label: "😎 Cool"},
-    { label: "😜 Silly" },
-    { label: "😇 Grateful" },
-    { label: "😴 Sleepy"},
-    { label: "😋 Hungry" },
-    { label: "😷 Sick" },
-    { label: "😱 Scared"},
-    // Add more feelings here
+    { emoji: "😊", label: "Happy" },
+    { emoji: "😢", label: "Sad" },
+    { emoji: "😃", label: "Excited" },
+    { emoji: "😡", label: "Angry" },
+    { emoji: "😔", label: "Tired" },
+    { emoji: "😩", label: "Stressed" },
+    { emoji: "😴", label: "Sleepy" },
+    { emoji: "😋", label: "Hungry" },
+    { emoji: "😷", label: "Sick" },
+    { emoji: "😱", label: "Scared" },
   ];
 
-  // State to track the selected moods
-  const [selectedMoods, setSelectedMoods] = useState([]);
+  const [selectedMood, setSelectedMood] = useState(null);
+  const [explanation, setExplanation] = useState('');
 
-  // Function to handle mood selection
   const handleMoodSelect = (mood) => {
-    if (selectedMoods.includes(mood)) {
-      // If mood is already selected, remove it
-      setSelectedMoods(selectedMoods.filter(selected => selected !== mood));
-    } else {
-      // If mood is not selected, add it
-      setSelectedMoods([...selectedMoods, mood]);
+    setSelectedMood(mood);
+  };
+
+  const handleExplanationChange = (e) => {
+    setExplanation(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // You can perform any further processing here, like submitting to a backend or updating state
+    console.log("Selected Mood:", selectedMood);
+    console.log("Explanation:", explanation);
+  };
+
+  useEffect(() => {
+    if (selectedMood) {
+      scrollToExplanationForm();
+    }
+  }, [selectedMood]);
+
+  const scrollToExplanationForm = () => {
+    const explanationForm = document.getElementById('explanation-form');
+    if (explanationForm) {
+      explanationForm.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  // Placeholder function for handling intensity measurement
-  const handleIntensityMeasure = () => {
-    console.log(selectedMoods); // Placeholder for intensity measurement logic
-  };
-
-  // Function to render a single mood option
-  const renderMood = (mood, key) => (
-    <div key={key} onClick={() => handleMoodSelect(mood.label)}>
-      <div className={`p-6 border rounded-lg cursor-pointer flex justify-center items-center text-3xl ${selectedMoods.includes(mood.label) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>
-        {mood.label}
-      </div>
-    </div>
-  );
-
   return (
-    <div className=''>
-      {/* Image */}
-      <div className="mb-10 text-center md:mb-5 pb-3 bg-gray-800 text-white">
-          <nav className="flex justify-between items-center py-4 px-6">
-            <div>
-              <Link to="/" className="flex items-center text-lg font-semibold">
-                <img
-                  src="/logom.png"
-                  alt="logo"
-                  className="w-8 mr-2"
-                />
-                Moodly
-              </Link>
-            </div>
-          </nav>
+    <div className=' pb-20'>
+      <StudentNav />
+      <div className="text-center mt-10 mb-4 ">
+        <h1 className="text-2xl font-semibold">How are you feeling right now?</h1>
+        <div className=' flex justify-center md:mt-5 mt-10 text-gray-600'>
+          <p className=' text-base w-[450px] mb-4'>Evaluate how you are feeling today and express your emotion in the way that works best for you</p>
         </div>
-
-
-      {/* Date, day, and prompt */}
-      <div className="text-center mt-2 mb-4 ">
-        {/* <p className='pb-3'>{currentDate}</p> */}
-        <h1 className="text-3xl">How are you feeling today?</h1>
-        {selectedMoods.length > 0 && (
-          <p className="text-lg my-4">Selected Moods: {selectedMoods.join(', ')}</p>
-        )}
       </div>
-
-      {/* Mood options */}
-      <div className="flex justify-center items-center">
-        <div className="grid gap-3 grid-cols-3">
+      <div className="flex justify-center items-center md:mt-1 mt-10">
+        <div className="grid gap-3 md:grid-cols-5 grid-cols-3">
           {moods.map((mood, index) => (
-            renderMood(mood, index)
+            <div key={index} onClick={() => handleMoodSelect(mood)}>
+              <div className={`p-6 border rounded-lg cursor-pointer justify-center items-center text-3xl ${selectedMood === mood ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>
+                <p role="img" aria-label={mood.label} className="mr-2 text-center md:text-7xl text-5xl">{mood.emoji}</p>
+                <p className=' text-center text-sm mt-4'>{mood.label}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Button for intensity measurement */}
-      <div className="text-center mt-6 mb-6">
-        <Link to={{ pathname: '/choose-mood/intensity', state: { selectedMoods: selectedMoods } }}>
-          <button onClick={handleIntensityMeasure} className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded w-40">
-            Set Intensity
-          </button>
-        </Link>
-      </div>
+      {/* Explanation form */}
+      {selectedMood && (
+        <div id="explanation-form" className="mt-40 flex justify-center  ">
+          <div className=' md:w-[50%] w-[90%] bg-gray-100 p-10'>
+          <h2 className="text-center font-semibold mb-4">Explanation for {selectedMood.label}</h2>
+          <p className=' text-6xl text-center'>{selectedMood.emoji} </p>
+          <p className=' text-center mt-2 text-sm'> {selectedMood.label}</p>
+          <form onSubmit={handleSubmit} className=' mt-10'>
+            <textarea
+              className="mt-4 p-2 w-full h-52 border "
+              placeholder="Explain your mood here..."
+              value={explanation}
+              onChange={handleExplanationChange}
+            />
+            <div className=' flex justify-center'>
+            <button type="submit" className="mt-20 bg-pink-600 hover:bg-blue-700 text-white font-bold py-5 px-10 ">
+              Submit
+            </button>
+            </div>
+          </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
