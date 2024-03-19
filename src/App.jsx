@@ -4,7 +4,7 @@ import InstructorSignup from './components/Authentication/InstructorSignup';
 import StudentLogin from './components/Authentication/StudentLogin';
 import StudentSignup from './components/Authentication/StudentSignup';
 import ChooseMood from './components/Student/Mood/ChooseMood'
-import Intensity from './components/Student/Mood/Intensity';
+import Thanks from './components/Student/Mood/thanks';
 import Student from './components/Student/studentPage';
 import Home from './components/home/Home';
 import { Route, Routes, useLocation } from 'react-router-dom';
@@ -26,7 +26,7 @@ function App() {
       <Route path='/instructor-signup' element={<InstructorSignup />} />
 
       <Route path='/choose-mood' element={<ChooseMood />} />
-      <Route path='/choose-mood/intensity' element={<Intensity />} />
+      <Route path='/choose-mood/Thank-you' element={<Thanks />} />
       <Route path='/student' element={<Student />} />
 
 

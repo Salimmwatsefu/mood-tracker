@@ -90,9 +90,9 @@ const ChooseMood = () => {
 
       {/* Button for intensity measurement */}
       <div className="text-center mt-6 mb-6">
-        <Link to={{ pathname: '/choose-mood/intensity', state: { selectedMoods: selectedMoods } }}>
+        <Link to={{ pathname: '/choose-mood/Thank-you', state: { selectedMoods: selectedMoods } }}>
           <button onClick={handleIntensityMeasure} className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded w-40">
-            Set Intensity
+            Choose Mood
           </button>
         </Link>
       </div>
