@@ -33,13 +33,13 @@ const PinInput = ({ length = 6 }) => {
     e.preventDefault();
     const pinCode = pin.join('');
     // Assuming you have a route named '/another-component' where you want to navigate
-    navigate('/choose-mood'); // Navigate to another component
+    navigate('/mood-home'); // Navigate to another component
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex justify-center md:mt-10 mt-28">
-        <div className='bg-red-500 md:py-20 py-32 px-16'>
+        <div className='bg-red-500 md:py-20 py-32 px-10'>
           {pin.map((digit, index) => (
             <input
               key={index}

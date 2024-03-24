@@ -33,14 +33,14 @@ export function InsDonutChart({ moods, onMostDominantMoodChange }) {
 
   return (
     <div className="py-5">
-      <Card className="sm:w-[470px] w-[370px] md:mx-2 mx-auto bg-tremor-background ">
+      <Card className=" md:mx-2 mx-auto bg-tremor-background ">
         <Flex className="space-x-8" justifyContent="start" alignItems="center">
           <Title>Feelings</Title>
         </Flex>
 
         <Legend
           categories={['Angry', 'Happy', 'Suprised', 'Sad', 'Fearful']}
-          colors={['rose', 'cyan', 'amber', 'violet', 'fuchsia']}
+          colors={['rose', 'cyan', 'violet', 'amber',  'fuchsia']}
           className="mt-10"
         />
         <DonutChart
@@ -48,7 +48,7 @@ export function InsDonutChart({ moods, onMostDominantMoodChange }) {
           variant="pie"
           category="count"
           index="mood"
-          colors={['rose', 'cyan',  'violet', 'amber', 'fuchsia']}
+          colors={['rose', 'cyan',  'amber', 'violet', 'fuchsia']}
           className="w-40 mt-10 mx-auto"
           showAnimation={true}
         />

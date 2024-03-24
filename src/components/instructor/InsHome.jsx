@@ -6,6 +6,7 @@ import InsNav from './InsNav'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../Authentication/AuthContext'
 import ClassInfo from './ClassInfo'
+import ClassQuote from './ClassQuote'
 
 
 function InsHome() {
@@ -83,26 +84,25 @@ function InsHome() {
       <InsNav />
 
         <div className=' pb-20'>
-            <div className='sm:flex gap-5  justify-center sm:pt-10 pt-5 mx-2'>
+            <div className='sm:flex gap-8  justify-center sm:pt-10 pt-5 mx-2'>
               <div className=' '>
             <ClassInfo sessionId={sessionId} moods={moods} />
                 <InsDonutChart  onMostDominantMoodChange={handleMostDominantMoodChange} moods={moods} />
+                <ClassQuote />
                 </div>
 
-                <div className=' w-full  '>
+                <div className='w-full  '>
                 
-                <InsBarGraph moods={datedMoods} />
-                
-                </div>
-                
-
-               
-                </div>
-                
-
-              <div className='ml-2'>
+                <InsBarGraph moods={datedMoods} sessionId={sessionId} />
                 <InsActivities />
-              </div>
+                
+                </div>
+
+                </div>
+                
+                
+
+              
         </div>
     </div>
   )
