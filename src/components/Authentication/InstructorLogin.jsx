@@ -3,6 +3,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import BASE_URL from "../../../apiConfig";
 
 const InstructorLogin = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ const InstructorLogin = () => {
   const navigate = useNavigate();
 
   const loginMutation = useMutation((formData) =>
-    fetch('http://127.0.0.1:5000/api/v1/auth/login', {
+    fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

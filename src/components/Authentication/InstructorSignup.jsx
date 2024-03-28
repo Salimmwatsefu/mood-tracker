@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from 'react-query';
+import BASE_URL from "../../../apiConfig";
 
 
 const InstructorSignup = () => {
@@ -18,7 +19,7 @@ const InstructorSignup = () => {
   });
 
   const registerMutation = useMutation((formData) => 
-    fetch('http://127.0.0.1:5000/api/v1/auth/register', {
+    fetch(`${BASE_URL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

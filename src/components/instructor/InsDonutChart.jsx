@@ -1,46 +1,44 @@
 import { DonutChart, Legend, Card, Flex, Title, List, ListItem } from '@tremor/react';
 import { useState, useEffect } from 'react';
 
-export function InsDonutChart({ moods, onMostDominantMoodChange }) {
-  const [dominantMoodColor, setDominantMoodColor] = useState('');
-  const [prevDominantMood, setPrevDominantMood] = useState(null);
+export function InsDonutChart({ moods, colors, onDominantMoodChange, onDominantColorChange }) {
+  const [dominantMood, setDominantMood] = useState(null);
+  const [dominantMoodColor, setDominantMoodColor] = useState(null);
 
   useEffect(() => {
-    if (!moods || moods.length === 0) return;
+    if (moods.length > 0 && Object.keys(colors).length > 0) {
+      // Calculate dominant mood
+      const dominant = moods.reduce((prev, current) => (prev.count > current.count ? prev : current));
+      setDominantMood(dominant.mood);
+      onDominantMoodChange(dominant.mood);
 
-    const mostDominantMood = moods.reduce((prev, current) => (prev.count > current.count ? prev : current));
-    const colorMapping = {
-      angry: '#f43f5e',    // Red
-      happy: '#06b6d4',    // Blue
-      surprised: '#8b5cf6', // Yellow 
-      sad: '#f59e0b',      // Purple
-      fearful: '#d946ef',  // Magenta
-      default: '#999999'   // Fallback color
-    };
-    
-    const dominantColor = colorMapping[mostDominantMood.mood.toLowerCase()] || colorMapping.default;
+      console.log("Dominant Mood:", dominant.mood);
+    console.log("Available colors:", colors);
+      
+    const dominantIndex = moods.findIndex(mood => mood.mood === dominant.mood);
+    console.log("Position of Dominant Mood:", dominantIndex);
 
-    if (!prevDominantMood || mostDominantMood.mood !== prevDominantMood.mood) {
-      setDominantMoodColor(dominantColor);
-      setPrevDominantMood(mostDominantMood);
+    // Find corresponding color for dominant mood
+    const dominantColor = Object.keys(colors)[dominantIndex];
+    console.log("Color Key for Dominant Mood:", dominantColor);
 
-      onMostDominantMoodChange({
-        name: mostDominantMood.mood,
-        color: dominantColor,
-      });
+    const dominantColorCode = colors[dominantColor];
+    console.log("Color Code for Dominant Mood:", dominantColorCode);
+
+    onDominantColorChange(dominantColorCode);
     }
-  }, [moods, onMostDominantMoodChange, prevDominantMood]);
+  }, [moods, onDominantMoodChange, onDominantColorChange, colors]);
 
   return (
     <div className="py-5">
-      <Card className=" md:mx-2 mx-auto bg-tremor-background ">
+      <Card className="md:mx-2 mx-auto">
         <Flex className="space-x-8" justifyContent="start" alignItems="center">
           <Title>Feelings</Title>
         </Flex>
 
         <Legend
-          categories={['Angry', 'Happy', 'Suprised', 'Sad', 'Fearful']}
-          colors={['rose', 'cyan', 'violet', 'amber',  'fuchsia']}
+          categories={moods.map((mood) => mood.mood)}
+          colors={Object.keys(colors)} // Pass the keys (color names) for the chart elements
           className="mt-10"
         />
         <DonutChart
@@ -48,7 +46,7 @@ export function InsDonutChart({ moods, onMostDominantMoodChange }) {
           variant="pie"
           category="count"
           index="mood"
-          colors={['rose', 'cyan',  'amber', 'violet', 'fuchsia']}
+          colors={Object.keys(colors)} // Pass the keys (color names) for the chart elements
           className="w-40 mt-10 mx-auto"
           showAnimation={true}
         />

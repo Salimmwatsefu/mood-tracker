@@ -11,10 +11,19 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import InsHome from './components/instructor/InsHome';
 import InstructorClass from './components/instructor/InstructorClass';
 import MoodHome from './components/Student/Mood/MoodHome';
+import { useEffect } from 'react';
+
 
 
 
 function App() {
+
+  const location = useLocation();
+
+  // Scroll to the top of the page when the location changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
   
 
   return (

@@ -77,12 +77,18 @@ export const AuthProvider = ({ children }) => {
     return storedToken;
   };
 
+  const studentLogin = (sessionToken) => {
+    localStorage.setItem('sessionToken', sessionToken);
+    // Optionally, you can perform additional actions upon student login
+  };
+
   const authValues = {
     user,
     isLoading,
     login,
     logout,
     getToken,
+    studentLogin,
   };
 
   return <AuthContext.Provider value={authValues}>{children}</AuthContext.Provider>;
