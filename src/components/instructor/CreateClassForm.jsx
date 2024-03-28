@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Modal from '../home/Modal';
 import { useMutation, useQueryClient } from 'react-query';
 import { useAuth } from '../Authentication/AuthContext';
+import BASE_URL from '../../../apiConfig';
+
 
 function CreateClassForm({ onClose }) {
   const { user, getToken } = useAuth();
@@ -14,7 +16,7 @@ function CreateClassForm({ onClose }) {
 
   const createClassMutation = useMutation(
     (formData) =>
-      fetch('http://127.0.0.1:5000/api/v1/class-session/create', {
+      fetch(`${BASE_URL}/class-session/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

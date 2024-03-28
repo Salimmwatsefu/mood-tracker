@@ -1,22 +1,25 @@
-import React, {useEffect, useState} from 'react'
-import { InsDonutChart } from './InsDonutChart'
-import InsBarGraph from './InsBarGraph'
-import InsActivities from './InsActivities'
-import InsNav from './InsNav'
+// InsHome.js
+import React, { useEffect, useState } from 'react';
+import { InsDonutChart } from './InsDonutChart';
+import InsBarGraph from './InsBarGraph';
+import InsActivities from './InsActivities';
+import InsNav from './InsNav';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '../Authentication/AuthContext'
-import ClassInfo from './ClassInfo'
-import ClassQuote from './ClassQuote'
+import { useAuth } from '../Authentication/AuthContext';
+import ClassInfo from './ClassInfo';
+import ClassQuote from './ClassQuote';
+import BASE_URL from '../../../apiConfig';
 
 
 function InsHome() {
-
   const { sessionId } = useParams();
-
   const { user, getToken } = useAuth();
   const navigate = useNavigate();
   const [moods, setMoods] = useState([]);
   const [datedMoods, setDatedMoods] = useState([]);
+  const [colors, setColors] = useState({});
+  const [dominantMood, setDominantMood] = useState(null);
+  const [dominantColor, setDominantColor] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -27,12 +30,9 @@ function InsHome() {
     }
   }, [user, navigate, sessionId]);
 
-
-  
-
   const fetchdatedMoods = async (classSessionId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/v1/insights/class-climate-date?class_session_id=${classSessionId}`, {
+      const response = await fetch(`${BASE_URL}/insights/class-climate-date?class_session_id=${classSessionId}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -49,10 +49,9 @@ function InsHome() {
     }
   };
 
-
   const fetchMoods = async (classSessionId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/v1/insights/class-climate?class_session_id=${classSessionId}`, {
+      const response = await fetch(`${BASE_URL}/insights/class-climate?class_session_id=${classSessionId}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -63,49 +62,65 @@ function InsHome() {
       }
 
       const data = await response.json();
-      setMoods(data.data);
+      const sortedMoods = data.data.sort((a, b) => a.mood.localeCompare(b.mood)); // Sort moods alphabetically
+      setMoods(sortedMoods);
     } catch (error) {
       console.error('Error fetching moods:', error.message);
     }
   };
 
-
   
+ 
 
-  const [dominantMoodColor, setDominantMoodColor] = useState('#fffff');
+  useEffect(() => {
+    // Define the colors here
+    const moodColors = {
+      red: '#ef4444',
+      cyan: '#06b6d4',
+      amber: '#f59e0b',
+      fuchsia: '#d946ef',
+      lime: '#84cc16',
+      violet: '#8b5cf6',
+      green: '#22c55e',
+      teal: '#14b8a6',
+      blue: '#3b82f6',
+      indigo: '#6366f1',
+      pink: '#ec4899',
+      stone: '#78716c',
+      rose: '#f43f5e',
+      sky: '#0ea5e9',
+      orange: '#f97316',
+      slate: '#64748b'
+      
+      // Add more mood-color mappings as needed
+    };
+    setColors(moodColors);
+  }, []);
 
-  const handleMostDominantMoodChange = (mostDominantMood) => {
-    setDominantMoodColor(mostDominantMood.color);
+  const handleDominantColorChange = (color) => {
+    setDominantColor(color);
   };
 
-
+ 
   return (
-    <div style={{ backgroundColor: dominantMoodColor }}>
+    <div style={{ backgroundColor: dominantColor }} >
       <InsNav />
-
-        <div className=' pb-20'>
-            <div className='sm:flex gap-8  justify-center sm:pt-10 pt-5 mx-2'>
-              <div className=' '>
+    
+      <div className='pb-20'>
+        <div className='sm:flex gap-8 justify-center sm:pt-10 pt-5 mx-2'>
+          <div>
             <ClassInfo sessionId={sessionId} moods={moods} />
-                <InsDonutChart  onMostDominantMoodChange={handleMostDominantMoodChange} moods={moods} />
-                <ClassQuote />
-                </div>
-
-                <div className='w-full  '>
-                
-                <InsBarGraph moods={datedMoods} sessionId={sessionId} />
-                <InsActivities />
-                
-                </div>
-
-                </div>
-                
-                
-
-              
+            <InsDonutChart  moods={moods} colors={colors} onDominantMoodChange={setDominantMood} onDominantColorChange={handleDominantColorChange} />
+            <ClassQuote />
+          </div>
+          <div className='w-full'>
+            <InsBarGraph moods={datedMoods} sessionId={sessionId} colors={colors} />
+            <InsActivities />
+          </div>
         </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default InsHome
+export default InsHome;

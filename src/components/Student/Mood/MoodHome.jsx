@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StudentNav from '../StudentNav';
 import ChooseMood from './ChooseMood';
 import Explanation from './Explanation';
@@ -6,18 +6,44 @@ import TakePhoto from './TakePhoto';
 import { TbCircleNumber1, TbCircleNumber2, TbCircleNumber3 } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
 import ThankYou from './ThankYou';
+import { useAuth } from '../../Authentication/AuthContext';
+import BASE_URL from '../../../../apiConfig';
+
 
 
 
 const MoodHome = () => {
   const [progress, setProgress] = useState(1);
   const [selectedMood, setSelectedMood] = useState(null);
+  const [selectedReasons, setSelectedReasons] = useState([]);
+  const [explanation, setExplanation] = useState('');
   const [showThankYou, setShowThankYou] = useState(false);
+  const navigate = useNavigate();
 
-  const handleNext = () => {
-    if (progress < 3) {
-      setProgress(progress + 1);
+  
+  const sessionToken = localStorage.getItem('sessionToken');
+
+// Check if session token is available
+if (!sessionToken) {
+  console.error('Session token not found in local storage');
+  // Handle the absence of token (e.g., redirect to login page)
+}
+
+useEffect(() => {
+  // Scroll to the top whenever progress changes
+  window.scrollTo(0, 0);
+}, [progress]);
+
+  const handleNextStep = async () => {
+    if (progress === 1 && !selectedMood) {
+      alert('Please select a mood');
+      return;
     }
+    if (progress === 2) {
+      // Submit mood, reasons, and explanations
+      await submitMoodReasonsExplanations();
+    }
+    setProgress(progress + 1);
   };
 
   const handleBack = () => {
@@ -26,29 +52,52 @@ const MoodHome = () => {
     }
   };
 
-  const handleMoodSelect = (mood) => {
-    setSelectedMood(mood);
-  };
-
   const handleReset = () => {
     setProgress(1);
     setSelectedMood(null);
+    setSelectedReasons([]);
+    setExplanation('');
   };
 
   const handleThankYou = () => {
     setShowThankYou(true);
-  }
+  };
 
-  if(showThankYou){
-    return <ThankYou />
-  }
+  const submitMoodReasonsExplanations = async () => {
+    try {
+      console.log('Request Body:', JSON.stringify({
+        selectedMood: selectedMood.label, // Assuming selectedMood is an object with a 'label' property
+        selectedReasons: selectedReasons.filter(reason => reason !== null).map(reason => reason.label), // Assuming selectedReasons is an array of objects with a 'label' property
+        explanation: explanation
+      }));
+  
+      const response = await fetch(`${BASE_URL}/mood/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionToken}`,
+        },
+        body: JSON.stringify({
+          selectedMood: selectedMood.label, // Assuming selectedMood is an object with a 'label' property
+          selectedReasons: selectedReasons.filter(reason => reason !== null).map(reason => reason.label), // Assuming selectedReasons is an array of objects with a 'label' property
+          explanation: explanation
+        })
+      });
+
+
+      if (!response.ok) {
+        throw new Error(`Failed to submit mood, reasons, and explanations ${response.status}`);
+      }
+      console.log('Form submitted successfully');
+    } catch (error) {
+      console.error('Error submitting mood, reasons, and explanations:', error.message);
+      // Handle error
+    }
+  };
 
   return (
     <div className='pb-20'>
       <StudentNav />
-      
-
-      {/* Progress Indicator */}
       <div className="mb-4">
         <h2 className="sr-only">Steps</h2>
         <div className="overflow-hidden rounded-full bg-gray-200">
@@ -69,32 +118,31 @@ const MoodHome = () => {
           </li>
         </ol>
       </div>
-
-      {/* Render Step Components */}
       {progress === 1 && (
         <ChooseMood
-          onNext={handleNext}
-          onMoodSelect={handleMoodSelect}
+          onNext={handleNextStep}
+          onMoodSelect={setSelectedMood}
           selectedMood={selectedMood}
         />
       )}
-
-{progress === 2 && selectedMood && ( // Render Explanation only if a mood is selected
+      {progress === 2 && selectedMood && (
         <Explanation
-          onNext={handleNext}
-          onBack={handleBack}
-          onReset={handleReset}
-          selectedMood={selectedMood}
-        />
+        onNext={handleNextStep}
+        onBack={handleBack}
+        onReset={handleReset}
+        onExplanationChange={setExplanation}
+        selectedMood={selectedMood}
+        selectedReasons={selectedReasons} // Pass the selectedReasons state
+        setSelectedReasons={setSelectedReasons} // Pass the state setter function
+      />
       )}
-
       {progress === 3 && (
         <TakePhoto
-        onBack={handleBack}
-        onThankYou = {handleThankYou}
+          onBack={handleBack}
+          onThankYou={handleThankYou}
         />
-
       )}
+      {showThankYou && <ThankYou />}
     </div>
   );
 };

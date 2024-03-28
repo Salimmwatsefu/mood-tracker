@@ -2,25 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-.Modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 90%;
-    max-height: 90%;
-    overflow: auto;
+  
+  .selected-reason {
+    background-color: #90cdf4; /* Change to desired background color */
   }
   
-  .Overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+  .not-selected-reason:hover {
+    background-color: #edf2f7; /* Change to desired hover background color */
+  }
+  
+  .selected-reason:focus,
+  .not-selected-reason:focus {
+    outline: 2px solid #4299e1; /* Change to desired focus outline color and thickness */
   }
   

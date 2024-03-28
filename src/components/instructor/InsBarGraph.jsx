@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Title, BarChart, Subtitle } from "@tremor/react";
 import CsvInsightsButton from './CsvInsightsButton';
 
-function InsBarGraph({ moods, sessionId }) {
+function InsBarGraph({ moods, sessionId, colors }) {
   const isMobile = window.innerWidth <= 768; // Assuming mobile devices have a max width of 768px
   
   // Determine the number of days to display based on device type
@@ -22,16 +22,14 @@ function InsBarGraph({ moods, sessionId }) {
       <Card className="mx-auto my-5 sm:my-0 sm:mb-5 bg-gray-50">
         <div className=' flex'>
           <div>
-        <Title>Feelings Last ({numDaysToShow} Days)</Title>
-        <Subtitle className=''>
-        Mood counts for each day over the past {numDaysToShow} days.
-        </Subtitle>
-        </div>
-        <div className='absolute md:right-10 right-1 '>
-
-          <CsvInsightsButton  sessionId={sessionId} />
-
-        </div>
+            <Title>Feelings Last ({numDaysToShow} Days)</Title>
+            <Subtitle className=''>
+              Mood counts for each day over the past {numDaysToShow} days.
+            </Subtitle>
+          </div>
+          <div className='absolute md:right-10 right-1 '>
+            <CsvInsightsButton sessionId={sessionId} />
+          </div>
         </div>
         
         <BarChart
@@ -39,14 +37,14 @@ function InsBarGraph({ moods, sessionId }) {
           data={chartData}
           index="name"
           categories={moodNames}
-          colors={["rose", "cyan", "amber", "violet", "fuchsia"]}
+          colors={Object.keys(colors)}
           yAxisWidth={20}
           showYAxis={true}
           showAnimation={true}
         />
       </Card>
     </div>
-  )
+  );
 }
 
 export default InsBarGraph;

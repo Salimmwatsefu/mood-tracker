@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card } from '@tremor/react';
 import { useQuery } from 'react-query';
 import { useAuth } from '../Authentication/AuthContext';
+import BASE_URL from '../../../apiConfig';
+
 
 
 function ClassInfo({ sessionId, moods }) {
@@ -19,7 +21,7 @@ function ClassInfo({ sessionId, moods }) {
   
     try {
       
-      const response = await fetch(`http://127.0.0.1:5000/api/v1/class-sessions/${sessionId}`, {
+      const response = await fetch(`${BASE_URL}/class-sessions/${sessionId}`, {
         headers: {
          
           Authorization: `Bearer ${getToken()}`,
@@ -45,11 +47,16 @@ function ClassInfo({ sessionId, moods }) {
 
     const mostDominantMood = moods.reduce((prev, current) => (prev.count > current.count ? prev : current));
     const emojiMapping = {
-      angry: { name: 'Angry', emoji: '😡' },
-      happy: { name: 'Happy', emoji: '😁' },
-      surprised: { name: 'Surprised', emoji: '😮' },
+      happy: { name: 'Happy', emoji: '😊' },
       sad: { name: 'Sad', emoji: '😢' },
-      fearful: { name: 'Fearful', emoji: '😱' },
+      excited: { name: 'Excited', emoji: '😃' },
+      angry: { name: 'Angry', emoji: '😡' },
+      tired: { name: 'Tired', emoji: '😔' },
+      stressed: { name: 'Stressed', emoji: '😩' },
+      sleepy: { name: 'Sleepy', emoji: '😴' },
+      hungry: { name: 'Hungry', emoji: '😋' },
+      sick: { name: 'Sick', emoji: '😷' },
+      scared: { name: 'Scared', emoji: '😱' },
     };
 
     const dominantMood = emojiMapping[mostDominantMood.mood.toLowerCase()] || { name: 'Unknown', emoji: '❓' };

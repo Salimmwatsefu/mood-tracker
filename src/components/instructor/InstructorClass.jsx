@@ -6,6 +6,8 @@ import { useAuth } from '../Authentication/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import BASE_URL from '../../../apiConfig';
+
 
 function InstructorClass() {
   const getRandomColor = () => {
@@ -28,7 +30,7 @@ function InstructorClass() {
   async function fetchClassSessions() {
     try {
       // Fetch created classes from your API
-      const response = await fetch('http://127.0.0.1:5000/api/v1/class-sessions/list', {
+      const response = await fetch(`${BASE_URL}/class-sessions/list`, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -47,9 +49,7 @@ function InstructorClass() {
     }
   }
 
-  const decodedString = atob("O31jKPKsFxUZswVMozNSpFOqp3SvTzBY9A5u24mztDerUsUxCP");
-console.log(decodedString);
-
+ 
 
   useEffect(() => {
    

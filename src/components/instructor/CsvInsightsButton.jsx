@@ -12,7 +12,7 @@ function CsvInsightsButton({sessionId}) {
   const handleExportInsights = async () => {
     try {
         
-      const response = await fetch(`http://127.0.0.1:5000/api/v1/insights/export/${sessionId}`);
+      const response = await fetch(`${BASE_URL}/insights/export/${sessionId}`);
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(new Blob([blob]));
