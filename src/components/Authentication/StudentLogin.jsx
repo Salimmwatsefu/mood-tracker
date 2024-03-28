@@ -5,7 +5,7 @@ import StudentNav from '../Student/StudentNav'
 
 function StudentLogin() {
   return (
-    <div>
+    <div className=' bg-[#49497D] h-screen'>
       <StudentNav />
       <div className=' '>
         <div >

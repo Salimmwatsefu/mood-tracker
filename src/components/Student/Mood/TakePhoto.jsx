@@ -38,6 +38,7 @@ function TakePhoto({ onBack, onThankYou }) {
     // For example, you can send the photoUrl to a backend server
     console.log("Submitting photo:", photoUrl);
     setModalIsOpen(false); // Close modal after submission
+    onThankYou();
   };
 
   const handleNoClick = () => {

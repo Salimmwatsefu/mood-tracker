@@ -1,7 +1,8 @@
-// ChooseMood.js
-import React from 'react';
+import React, { useState } from 'react';
 
 const ChooseMood = ({ onNext, onMoodSelect, selectedMood }) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
   const moods = [
     { emoji: "😊", label: "Happy" },
     { emoji: "😢", label: "Sad" },
@@ -16,7 +17,11 @@ const ChooseMood = ({ onNext, onMoodSelect, selectedMood }) => {
   ];
 
   const handleMoodSelect = (mood) => {
-    onMoodSelect(mood);
+    const isConfirmed = window.confirm(`Are you sure you want to select ${mood.label}?`);
+    if (isConfirmed) {
+      onMoodSelect(mood);
+      onNext();
+    }
   };
 
   return (
@@ -28,20 +33,18 @@ const ChooseMood = ({ onNext, onMoodSelect, selectedMood }) => {
         </div>
       </div>
    
-    <div className="flex justify-center items-center md:mt-1 mt-10">
-      <div className="grid gap-3 md:grid-cols-5 grid-cols-3">
-        {moods.map((mood, index) => (
-          <div key={index} onClick={() => handleMoodSelect(mood)}>
-            <div className={`p-6 border rounded-lg cursor-pointer justify-center items-center text-3xl ${selectedMood === mood ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>
-              <p role="img" aria-label={mood.label} className="mr-2 text-center md:text-7xl text-5xl">{mood.emoji}</p>
-              <p className='text-center text-sm mt-4'>{mood.label}</p>
+      <div className="flex justify-center items-center md:mt-1 mt-10">
+        <div className="grid gap-3 md:grid-cols-5 grid-cols-3">
+          {moods.map((mood, index) => (
+            <div key={index} onClick={() => handleMoodSelect(mood)}>
+              <div className={`p-6 border rounded-lg cursor-pointer justify-center items-center text-3xl ${selectedMood === mood ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>
+                <p role="img" aria-label={mood.label} className="mr-2 text-center md:text-7xl text-5xl">{mood.emoji}</p>
+                <p className='text-center text-sm mt-4'>{mood.label}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      
-    </div>
-    <button className={`bg-blue-500 text-white px-4 py-2 mt-4 ${selectedMood ? '' : 'opacity-50 cursor-not-allowed'}`} onClick={onNext} disabled={!selectedMood}>Next</button>
     </div>
   );
 };

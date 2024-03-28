@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
   const decodeToken = (token) => {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      console.log('Decoded Token:', payload); // Log the decoded token
       return payload;
     } catch (error) {
       console.error('Error decoding token:', error);
@@ -19,11 +18,9 @@ export const AuthProvider = ({ children }) => {
  
   const [user, setUser] = useState(() => {
     const storedToken = localStorage.getItem('token');
-    console.log('Stored Token:', storedToken); // Log stored token
     if (storedToken) {
       try {
         const decodedToken = decodeToken(storedToken);
-        console.log('Decoded Token:', decodedToken); // Log decoded token
        
         return decodedToken.sub;
         
@@ -35,7 +32,6 @@ export const AuthProvider = ({ children }) => {
     return null;
   });
   
-  console.log('User:', user)
 
   
   const [isLoading, setIsLoading] = useState(false);

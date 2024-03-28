@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { IoIosArrowBack } from "react-icons/io";
 
-const Explanation = ({ onBack, onNext, selectedMood, selectedReasons, setSelectedReasons, onExplanationChange  }) => {
+const Explanation = ({ onBack, onNext, selectedMood, selectedReasons, setSelectedReasons, onExplanationChange }) => {
   const [explanation, setExplanation] = useState('');
-  
 
   const reasons = [
     { label: "Family issues", emoji: "👨‍👩‍👧" },
@@ -29,16 +28,19 @@ const Explanation = ({ onBack, onNext, selectedMood, selectedReasons, setSelecte
     onExplanationChange(e.target.value);
   };
 
+  const handleNext = () => {
+    const confirmed = window.confirm("Are you sure you want to proceed?");
+    if (confirmed) {
+      handleSubmit();
+      onNext();
+    }
+  };
+
   const handleSubmit = () => {
     // You can perform any further processing here, like submitting to a backend or updating state
     console.log("Selected Mood:", selectedMood);
     console.log("Selected Reasons:", selectedReasons);
     console.log("Explanation:", explanation);
-  };
-
-  const handleNext = () => {
-    handleSubmit(); // Submit the form
-    onNext(); // Proceed to the next step
   };
 
   return (
@@ -47,7 +49,7 @@ const Explanation = ({ onBack, onNext, selectedMood, selectedReasons, setSelecte
         <button className='absolute left-5' onClick={onBack}>
           <span className='text-2xl'><IoIosArrowBack /></span>
         </button>
-        <h2 className="text-center font-semibold mb-4 mt-5">I am {selectedMood?.label}</h2>
+        <h2 className="text-center font-semibold mb-4 mt-5">Please share more about why you are {selectedMood?.label}</h2>
         <p className='sm:text-6xl text-5xl text-center'>{selectedMood?.emoji} </p>
         
         {/* Render reason boxes */}
@@ -65,8 +67,8 @@ const Explanation = ({ onBack, onNext, selectedMood, selectedReasons, setSelecte
         </div>
 
         <textarea
-          className="mt-4 p-2 w-full h-52 border"
-          placeholder="Explain your mood here..."
+          className="mt-20 p-2 w-full h-52 border"
+          placeholder="Please share more about how you're feeling today..."
           value={explanation}
           onChange={handleExplanationChange}
         />

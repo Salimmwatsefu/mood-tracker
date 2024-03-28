@@ -63,7 +63,7 @@ const PinInput = ({ length = 6 }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex justify-center md:mt-10 mt-28">
-        <div className='bg-red-500 md:py-20 py-32 px-5'>
+        <div className='bg-[#231a36] md:py-20 py-32 px-5'>
           {pin.map((digit, index) => (
             <input
               key={index}
@@ -78,7 +78,7 @@ const PinInput = ({ length = 6 }) => {
           ))}
         </div>
       </div>
-      <button type="submit" className="block mt-20 md:mt-4 mx-auto px-10 py-4 bg-blue-500 text-white ">Submit</button>
+      <button type="submit" className="block mt-20 md:mt-4 mx-auto px-10 py-4 bg-white text-[#231a36] font-semibold">Submit</button>
     </form>
   );
 };
