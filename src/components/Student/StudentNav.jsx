@@ -11,7 +11,7 @@ function StudentNav() {
 
 
   return (
-    <div className=''>
+    <div className=' bg-white'>
          <div className='  w-full z-10  border-b'>
         <div className='md:my-2 my-1  flex justify-center'>
           <Link href={'/'}>

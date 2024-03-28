@@ -5,12 +5,8 @@ import Explanation from './Explanation';
 import TakePhoto from './TakePhoto';
 import { TbCircleNumber1, TbCircleNumber2, TbCircleNumber3 } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
-import ThankYou from './ThankYou';
 import { useAuth } from '../../Authentication/AuthContext';
 import BASE_URL from '../../../../apiConfig';
-
-
-
 
 const MoodHome = () => {
   const [progress, setProgress] = useState(1);
@@ -20,19 +16,16 @@ const MoodHome = () => {
   const [showThankYou, setShowThankYou] = useState(false);
   const navigate = useNavigate();
 
-  
   const sessionToken = localStorage.getItem('sessionToken');
 
-// Check if session token is available
-if (!sessionToken) {
-  console.error('Session token not found in local storage');
-  // Handle the absence of token (e.g., redirect to login page)
-}
+  useEffect(() => {
+    // Scroll to the top whenever progress changes
+    window.scrollTo(0, 0);
+  }, [progress]);
 
-useEffect(() => {
-  // Scroll to the top whenever progress changes
-  window.scrollTo(0, 0);
-}, [progress]);
+  const handleThankYou = () => {
+    navigate('/thankyou');
+  };
 
   const handleNextStep = async () => {
     if (progress === 1 && !selectedMood) {
@@ -42,6 +35,9 @@ useEffect(() => {
     if (progress === 2) {
       // Submit mood, reasons, and explanations
       await submitMoodReasonsExplanations();
+    }
+    if (progress === 3) {
+      return;
     }
     setProgress(progress + 1);
   };
@@ -59,15 +55,11 @@ useEffect(() => {
     setExplanation('');
   };
 
-  const handleThankYou = () => {
-    setShowThankYou(true);
-  };
-
   const submitMoodReasonsExplanations = async () => {
     try {
       console.log('Request Body:', JSON.stringify({
-        selectedMood: selectedMood.label, // Assuming selectedMood is an object with a 'label' property
-        selectedReasons: selectedReasons.filter(reason => reason !== null).map(reason => reason.label), // Assuming selectedReasons is an array of objects with a 'label' property
+        selectedMood: selectedMood.label,
+        selectedReasons: selectedReasons.filter(reason => reason !== null).map(reason => reason.label),
         explanation: explanation
       }));
   
@@ -78,12 +70,11 @@ useEffect(() => {
           'Authorization': `Bearer ${sessionToken}`,
         },
         body: JSON.stringify({
-          selectedMood: selectedMood.label, // Assuming selectedMood is an object with a 'label' property
-          selectedReasons: selectedReasons.filter(reason => reason !== null).map(reason => reason.label), // Assuming selectedReasons is an array of objects with a 'label' property
+          selectedMood: selectedMood.label,
+          selectedReasons: selectedReasons.filter(reason => reason !== null).map(reason => reason.label),
           explanation: explanation
         })
       });
-
 
       if (!response.ok) {
         throw new Error(`Failed to submit mood, reasons, and explanations ${response.status}`);
@@ -105,15 +96,15 @@ useEffect(() => {
         </div>
         <ol className="mt-4 grid grid-cols-3 text-sm font-medium text-gray-500">
           <li className={`flex items-center justify-center ${progress >= 1 ? 'text-blue-600' : 'text-gray-400'}`}>
-          <span class=" text-[23px] inline sm:hidden"> <TbCircleNumber1 /> </span>
+            <span className=" text-[23px] inline sm:hidden"> <TbCircleNumber1 /> </span>
             <span className="hidden sm:inline">Choose Mood</span>
           </li>
           <li className={`flex items-center justify-center ${progress >= 2 ? 'text-blue-600' : 'text-gray-400'}`}>
-          <span class=" text-[23px] inline sm:hidden"> <TbCircleNumber2 /> </span>
+            <span className=" text-[23px] inline sm:hidden"> <TbCircleNumber2 /> </span>
             <span className="hidden sm:inline">Explanation</span>
           </li>
           <li className={`flex items-center justify-center ${progress >= 3 ? 'text-blue-600' : 'text-gray-400'}`}>
-          <span class=" text-[23px] inline sm:hidden"> <TbCircleNumber3 /> </span>
+            <span className=" text-[23px] inline sm:hidden"> <TbCircleNumber3 /> </span>
             <span className="hidden sm:inline">Photo</span>
           </li>
         </ol>
@@ -127,14 +118,14 @@ useEffect(() => {
       )}
       {progress === 2 && selectedMood && (
         <Explanation
-        onNext={handleNextStep}
-        onBack={handleBack}
-        onReset={handleReset}
-        onExplanationChange={setExplanation}
-        selectedMood={selectedMood}
-        selectedReasons={selectedReasons} // Pass the selectedReasons state
-        setSelectedReasons={setSelectedReasons} // Pass the state setter function
-      />
+          onNext={handleNextStep}
+          onBack={handleBack}
+          onReset={handleReset}
+          onExplanationChange={setExplanation}
+          selectedMood={selectedMood}
+          selectedReasons={selectedReasons}
+          setSelectedReasons={setSelectedReasons}
+        />
       )}
       {progress === 3 && (
         <TakePhoto
@@ -142,7 +133,6 @@ useEffect(() => {
           onThankYou={handleThankYou}
         />
       )}
-      {showThankYou && <ThankYou />}
     </div>
   );
 };
