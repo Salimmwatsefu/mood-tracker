@@ -10,6 +10,7 @@ import Home from './components/home/Home';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import InsHome from './components/instructor/InsHome';
 import InstructorClass from './components/instructor/InstructorClass';
+import MoodHome from './components/Student/Mood/MoodHome';
 
 
 
@@ -28,6 +29,7 @@ function App() {
       <Route path='/choose-mood' element={<ChooseMood />} />
       <Route path='/choose-mood/intensity' element={<Intensity />} />
       <Route path='/student' element={<Student />} />
+      <Route path='/mood-home' element={<MoodHome />} />
 
 
       <Route path='instructor-home/:sessionId' element={<InsHome />} />

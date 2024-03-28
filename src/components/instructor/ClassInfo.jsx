@@ -11,14 +11,14 @@ function ClassInfo({ sessionId, moods }) {
 
 
 
-  console.log('sessionId:', sessionId);
+
   const sessionIdString = sessionId.toString();
   const { data: classInfoData, isLoading, isError } = useQuery(['classInfo', sessionIdString], () => fetchClassInfo(sessionIdString));
 
   async function fetchClassInfo(sessionId) {
   
     try {
-      console.log('Session ID:', sessionId); 
+      
       const response = await fetch(`http://127.0.0.1:5000/api/v1/class-sessions/${sessionId}`, {
         headers: {
          
@@ -59,7 +59,7 @@ function ClassInfo({ sessionId, moods }) {
   return (
     <div>
       <div>
-        <Card className='sm:w-[470px] w-[370px] md:mx-2 mx-auto bg-tremor-background'>
+        <Card className=' md:mx-2 mx-auto bg-tremor-background'>
           {isLoading && <p>Loading...</p>}
           {isError && <p>Error fetching class info</p>}
           {classInfoData && (
