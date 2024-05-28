@@ -7,6 +7,8 @@ import { TbCircleNumber1, TbCircleNumber2, TbCircleNumber3 } from "react-icons/t
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Authentication/AuthContext';
 import BASE_URL from '../../../../apiConfig';
+import Swal from 'sweetalert2';
+
 
 const MoodHome = () => {
   const [progress, setProgress] = useState(1);
@@ -29,7 +31,8 @@ const MoodHome = () => {
 
   const handleNextStep = async () => {
     if (progress === 1 && !selectedMood) {
-      alert('Please select a mood');
+      // alert('Please select a mood');
+      // Swal.fire("Please select a mood");
       return;
     }
     if (progress === 2) {
