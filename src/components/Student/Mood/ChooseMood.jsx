@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const ChooseMood = ({ onNext, onMoodSelect, selectedMood }) => {
-  const [showConfirmation, setShowConfirmation] = useState(false);
-
   const moods = [
     { emoji: "😊", label: "Happy" },
     { emoji: "😢", label: "Sad" },
@@ -17,11 +16,19 @@ const ChooseMood = ({ onNext, onMoodSelect, selectedMood }) => {
   ];
 
   const handleMoodSelect = (mood) => {
-    const isConfirmed = window.confirm(`Are you sure you want to select ${mood.label}?`);
-    if (isConfirmed) {
-      onMoodSelect(mood);
-      onNext();
-    }
+    Swal.fire({
+      title: `Are you sure you want to select ${mood.emoji}: ${mood.label}?`,
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onMoodSelect(mood);
+        onNext();
+      } else if (result.isDenied) {
+        // No action needed if "No" is clicked
+      }
+    });
   };
 
   return (

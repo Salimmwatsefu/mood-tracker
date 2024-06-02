@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IoIosArrowBack } from "react-icons/io";
+import Swal from 'sweetalert2';
 
 const Explanation = ({ onBack, onNext, selectedMood, selectedReasons, setSelectedReasons, onExplanationChange }) => {
   const [explanation, setExplanation] = useState('');
@@ -29,14 +30,27 @@ const Explanation = ({ onBack, onNext, selectedMood, selectedReasons, setSelecte
   };
 
   const handleNext = () => {
-    const confirmed = window.confirm("Are you sure you want to proceed?");
-    if (confirmed) {
-      handleSubmit();
-      onNext();
-    }
+    Swal.fire({
+      title: "Are you sure you want to proceed?",
+      showDenyButton: true,
+      confirmButtonText: "Confirm",
+      denyButtonText: "Cancel"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleSubmit();
+        onNext(); // Call onNext only if the user confirmed
+      } else if (result.isDenied) {
+        // No action needed if "No" is clicked
+      }
+    });
   };
 
   const handleSubmit = () => {
+    if (!selectedReasons.length || !explanation) {
+      // You may want to display an error message here
+      console.log("Please select reasons and provide an explanation.");
+      return;
+    }
     // You can perform any further processing here, like submitting to a backend or updating state
     console.log("Selected Mood:", selectedMood);
     console.log("Selected Reasons:", selectedReasons);
