@@ -7,9 +7,8 @@ import { TbCircleNumber1, TbCircleNumber2, TbCircleNumber3 } from "react-icons/t
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Authentication/AuthContext';
 import BASE_URL from '../../../../apiConfig';
-import Suggestions from './Suggestions';
 import Swal from 'sweetalert2';
-
+import Suggestions from './Suggestions/Suggestions';
 
 const MoodHome = () => {
   const [progress, setProgress] = useState(1);

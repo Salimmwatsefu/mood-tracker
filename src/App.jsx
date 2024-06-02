@@ -13,7 +13,7 @@ import InstructorClass from './components/instructor/InstructorClass';
 import MoodHome from './components/Student/Mood/MoodHome';
 import { useEffect } from 'react';
 import ThankYou from './components/Student/Mood/ThankYou';
-import Suggestions from './components/Student/Mood/Suggestions';
+import Suggestions from './components/Student/Mood/Suggestions/Suggestions';
 
 
 
