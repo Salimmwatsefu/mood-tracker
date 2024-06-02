@@ -13,6 +13,7 @@ import InstructorClass from './components/instructor/InstructorClass';
 import MoodHome from './components/Student/Mood/MoodHome';
 import { useEffect } from 'react';
 import ThankYou from './components/Student/Mood/ThankYou';
+import Suggestions from './components/Student/Mood/Suggestions';
 
 
 
@@ -45,6 +46,8 @@ function App() {
       <Route path='instructor-home/:sessionId' element={<InsHome />} />
       <Route path='/instructor-class' element={<InstructorClass />} />
       <Route path='/thankyou' element={<ThankYou />} />
+      <Route path='/suggestions' element={<Suggestions />} />
+
 
     </Routes>
     </>

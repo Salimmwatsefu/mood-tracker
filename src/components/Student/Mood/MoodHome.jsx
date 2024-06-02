@@ -7,6 +7,7 @@ import { TbCircleNumber1, TbCircleNumber2, TbCircleNumber3 } from "react-icons/t
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Authentication/AuthContext';
 import BASE_URL from '../../../../apiConfig';
+import Suggestions from './Suggestions';
 import Swal from 'sweetalert2';
 
 
@@ -28,6 +29,10 @@ const MoodHome = () => {
   const handleThankYou = () => {
     navigate('/thankyou');
   };
+
+  const handleSuggestions = () => {
+    navigate('/suggestions');
+  }
 
   const handleNextStep = async () => {
     if (progress === 1 && !selectedMood) {
@@ -133,7 +138,7 @@ const MoodHome = () => {
       {progress === 3 && (
         <TakePhoto
           onBack={handleBack}
-          onThankYou={handleThankYou}
+          onSuggestions={handleSuggestions}
         />
       )}
     </div>
