@@ -1,14 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import BASE_URL from '../../../apiConfig';
-
 
 const PinInput = ({ length = 6 }) => {
   const [pin, setPin] = useState(Array(length).fill(''));
-  const inputRefs = Array(length).fill(0).map(i => useRef(null));
+  const inputRefs = Array(length).fill(0).map(() => useRef(null));
   const navigate = useNavigate();
-  const { studentLogin } = useAuth(); // Access the studentLogin function from AuthContext
+  const { studentLogin } = useAuth();
 
   const handleChange = (e, index) => {
     const { value } = e.target;
@@ -48,20 +49,26 @@ const PinInput = ({ length = 6 }) => {
         const data = await response.json();
         const { session_token } = data;
         studentLogin(session_token); // Login the student with the received session token
+        toast.success('Successfully logged in!');
         navigate('/mood-home'); // Redirect to mood-home page
       } else {
         const error = await response.json();
         console.error(error);
-        // Handle error response if needed
+        toast.error('Failed to login. Please try again.');
+        setPin(Array(length).fill('')); // Clear the pin input fields
+        inputRefs[0].current.focus(); // Focus on the first input field
       }
     } catch (error) {
       console.error('An unexpected error occurred:', error);
-      // Handle unexpected error if needed
+      toast.error('An unexpected error occurred. Please try again.');
+      setPin(Array(length).fill('')); // Clear the pin input fields
+      inputRefs[0].current.focus(); // Focus on the first input field
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <ToastContainer />
       <div className="flex justify-center md:mt-10 mt-28">
         <div className='bg-[#231a36] md:py-20 py-32 px-5'>
           {pin.map((digit, index) => (

@@ -4,11 +4,13 @@ import Modal from 'react-modal'; // Import react-modal
 import { IoCamera } from "react-icons/io5";
 
 import { IoIosArrowBack } from "react-icons/io";
+import Swal from 'sweetalert2';
 
 // Set app element for react-modal
 Modal.setAppElement('#root');
 
 function TakePhoto({ onBack, onSuggestions }) {
+function TakePhoto({ onBack, onThankYou, mood }) {
   const [photoUrl, setPhotoUrl] = useState(null);
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -47,6 +49,18 @@ function TakePhoto({ onBack, onSuggestions }) {
       // Perform action if the user confirms
       onSuggestions();
     }
+    Swal.fire({
+      title: "Are you sure?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onThankYou();
+      } else if (result.isDenied) {
+        // No action needed if "No" is clicked
+      }
+    });
   };
 
   const closeModal = () => {

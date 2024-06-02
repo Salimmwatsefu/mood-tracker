@@ -3,6 +3,8 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useMutation } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import BASE_URL from "../../../apiConfig";
 
 const InstructorLogin = () => {
@@ -42,15 +44,22 @@ const InstructorLogin = () => {
     try {
       const result = await loginMutation.mutateAsync(formData);
       const { access_token, username } = result;
-      
+
       // Use the login function from useAuth to handle authentication
       login(access_token, username);
 
+      // Show success toast
+      toast.success("Login successful!");
+
       // Redirect to the desired page upon successful login
-      navigate('/instructor-class');
+      setTimeout(() => {
+        navigate('/instructor-class');
+      }, 2000);
   
     } catch (error) {
       console.error('Login error:', error.message);
+      // Show error toast
+      toast.error('Login failed. Please check your username and password.');
     }
   };
  
@@ -58,9 +67,10 @@ const InstructorLogin = () => {
     // Add logic to go back to the previous page
     window.history.back();
   };
- 
+
   return (
     <section className="bg-gray-100  lg:py-[60px]">
+      <ToastContainer />
       <div className="container mx-auto">
         <div className="-mx-1 flex flex-wrap ">
           <div className="w-full px-4">
