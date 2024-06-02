@@ -8,7 +8,7 @@ import { IoIosArrowBack } from "react-icons/io";
 // Set app element for react-modal
 Modal.setAppElement('#root');
 
-function TakePhoto({ onBack, onThankYou }) {
+function TakePhoto({ onBack, onSuggestions }) {
   const [photoUrl, setPhotoUrl] = useState(null);
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -38,14 +38,14 @@ function TakePhoto({ onBack, onThankYou }) {
     // For example, you can send the photoUrl to a backend server
     console.log("Submitting photo:", photoUrl);
     setModalIsOpen(false); // Close modal after submission
-    onThankYou();
+    onSuggestions();
   };
 
   const handleNoClick = () => {
     const confirmed = window.confirm("Are you sure you don't want to take a photo?");
     if (confirmed) {
       // Perform action if the user confirms
-      onThankYou();
+      onSuggestions();
     }
   };
 
